@@ -8,7 +8,15 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
-import { CheckCircle2, Zap, Shield, Palette } from 'lucide-react';
+import {
+  Accessibility,
+  CheckCircle2,
+  ClipboardCheck,
+  Layers,
+  Palette,
+  Shield,
+  Zap,
+} from 'lucide-react';
 import { ROUTES } from '@/lib/constants/routes';
 
 /**
@@ -16,25 +24,70 @@ import { ROUTES } from '@/lib/constants/routes';
  * 스타터킷 소개 및 주요 기능 설명
  */
 
-export default function HomePage() {
-  const features = [
-    {
-      icon: Zap,
-      title: '빠른 개발',
-      description: '검증된 컴포넌트와 유틸리티로 빠르게 프로젝트를 시작하세요.',
-    },
-    {
-      icon: Palette,
-      title: '다크모드',
-      description: '시스템 설정에 따라 자동으로 전환되는 다크모드를 지원합니다.',
-    },
-    {
-      icon: Shield,
-      title: '타입 안정성',
-      description: 'TypeScript와 Zod로 타입 안정성을 보장합니다.',
-    },
-  ];
+const features = [
+  {
+    icon: Zap,
+    title: '빠른 개발',
+    description: '자주 쓰는 구성 요소가 준비되어 있어 바로 기능 개발을 시작할 수 있습니다.',
+    details: [
+      'shadcn/ui 컴포넌트 10종',
+      '메인·인증·에러 레이아웃 템플릿',
+      '커스텀 훅 4종과 포맷 유틸리티',
+    ],
+  },
+  {
+    icon: Layers,
+    title: '계층적 컴포넌트',
+    description: 'Atomic Design 기반의 5단계 구조로 컴포넌트의 역할을 명확히 나눕니다.',
+    details: [
+      'Atoms → Molecules → Organisms',
+      'Templates → Pages로 이어지는 조합',
+      '@/ 경로 별칭으로 일관된 import',
+    ],
+  },
+  {
+    icon: Shield,
+    title: '타입 안정성',
+    description: 'TypeScript와 Zod로 컴파일 시점과 런타임의 데이터를 함께 검사합니다.',
+    details: [
+      'Zod 스키마 기반 런타임 검증',
+      'z.infer로 스키마에서 타입 추론',
+      '재사용 가능한 공통 검증 스키마',
+    ],
+  },
+  {
+    icon: ClipboardCheck,
+    title: '폼 처리',
+    description: 'React Hook Form과 Zod를 연결한 폼 패턴을 바로 가져다 쓸 수 있습니다.',
+    details: [
+      '로그인·회원가입 폼 기본 제공',
+      'zodResolver를 통한 스키마 검증',
+      '입력 필드별 에러 메시지 표시',
+    ],
+  },
+  {
+    icon: Palette,
+    title: '다크모드',
+    description: '시스템 설정을 따르면서 사용자가 직접 테마를 바꿀 수도 있습니다.',
+    details: [
+      'next-themes 기반 테마 관리',
+      '시스템 설정 자동 감지',
+      '헤더의 테마 전환 버튼',
+    ],
+  },
+  {
+    icon: Accessibility,
+    title: '반응형 · 접근성',
+    description: '모바일 우선으로 구성하고 보조 기술을 위한 정보도 함께 제공합니다.',
+    details: [
+      'Tailwind 모바일 우선 브레이크포인트',
+      'useMediaQuery 반응형 훅',
+      'ARIA 속성과 스크린 리더 전용 텍스트',
+    ],
+  },
+];
 
+export default function HomePage() {
   return (
     <MainLayout>
       {/* Hero Section */}
@@ -81,16 +134,29 @@ export default function HomePage() {
             </Text>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {features.map((feature) => {
               const Icon = feature.icon;
               return (
                 <Card key={feature.title}>
                   <CardHeader>
-                    <Icon className="h-10 w-10 mb-2 text-primary" />
+                    <Icon className="h-10 w-10 mb-2 text-primary" aria-hidden="true" />
                     <CardTitle>{feature.title}</CardTitle>
                     <CardDescription>{feature.description}</CardDescription>
                   </CardHeader>
+                  <CardContent>
+                    <ul className="space-y-2 text-sm">
+                      {feature.details.map((detail) => (
+                        <li key={detail} className="flex items-start gap-2">
+                          <CheckCircle2
+                            className="h-4 w-4 mt-0.5 shrink-0 text-primary"
+                            aria-hidden="true"
+                          />
+                          <span>{detail}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </CardContent>
                 </Card>
               );
             })}
